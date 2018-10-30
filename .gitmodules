@@ -1,0 +1,3 @@
+[submodule "TSHelper"]
+	path = TSHelper
+	url = https://iatsh.visualstudio.com/DefaultCollection/WindowsProtocolTestSuites/_git/WindowsProtocolTestSuitesHelper
