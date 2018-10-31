@@ -14,7 +14,20 @@ Set-Location .\TSHelper
 $path = Get-Location
 Write-Host "Current Directory changed to: $path"
 
-Write-Host "Start to call git checkout $BranchName"
-git fetch
-git checkout $BranchName
+try {
+    Write-Host "Start to call git checkout $BranchName"
+    git fetch
+    git checkout $BranchName    
+}
+catch {
+    Write-Warning $_.Exception.Message
+}
+
+$branch= &git rev-parse --abbrev-ref HEAD
+
 Pop-Location
+
+if($branch -ne $BranchName)
+{
+    throw "Check out branch $BranchName failed"
+}
