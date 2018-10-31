@@ -29,5 +29,9 @@ Pop-Location
 
 if($branch -ne $BranchName)
 {
+    $LastExitCode = 1
     throw "Check out branch $BranchName failed"
+}
+else{
+    $LastExitCode = 0
 }
