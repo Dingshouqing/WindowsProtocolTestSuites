@@ -11,7 +11,8 @@ Push-Location $scriptsPath
 Write-Host $scriptsPath
 Set-Location .\TSHelper
 
-Get-Location
+$path = Get-Location
+Write-Host "Get Current Directory: $path"
 
 Write-Host "Start to call git checkout $BranchName"
 git checkout $BranchName
