@@ -16,8 +16,8 @@ Write-Host "Current Directory changed to: $path"
 
 try {
     Write-Host "Start to call git checkout $BranchName"
-    git fetch
-    git checkout $BranchName    
+    $gitResult= &git fetch
+    $gitResult= &git checkout $BranchName    
 }
 catch {
     Write-Warning $_.Exception.Message
