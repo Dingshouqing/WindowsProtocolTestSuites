@@ -10,5 +10,9 @@ $scriptsPath = Split-Path $MyInvocation.MyCommand.Definition
 Push-Location $scriptsPath
 Write-Host $scriptsPath
 Set-Location .\TSHelper
+
+Get-Location
+
+Write-Host "Start to call git checkout $BranchName"
 git checkout $BranchName
 Pop-Location
