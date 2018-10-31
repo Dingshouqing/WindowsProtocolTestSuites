@@ -24,6 +24,9 @@ steps:
    
    Write-Host "Change to TSHelper Folder"
    cd TSHelper
+   $scriptsPath = Split-Path $MyInvocation.MyCommand.Definition
+   Write-Host $scriptsPath
+   pushd $scriptsPath
    & "git checkout $(HelperBranchName)"
    
     
