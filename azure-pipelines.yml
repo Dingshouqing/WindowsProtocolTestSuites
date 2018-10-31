@@ -19,9 +19,7 @@ steps:
     restoreSolution: '$(Parameters.solution)'
 
 - powershell: ./ PreapreTSHelper.ps1 
-  arguments: '-BranchName v-wedin/AddAzureScript'
-
-  displayName: 'Checkout TSHelper branch'  
+  arguments: '-BranchName v-wedin/AddAzureScript' 
    
 - task: VSBuild@1
   displayName: 'Build solution RDP Server'
