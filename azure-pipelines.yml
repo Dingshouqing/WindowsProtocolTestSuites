@@ -19,19 +19,10 @@ steps:
     restoreSolution: '$(Parameters.solution)'
 
 
-- powershell: |
-   # Write your powershell commands here.
-   
-   Write-Host "Change to TSHelper Folder"
-   cd TSHelper
-   $scriptsPath = Split-Path $MyInvocation.MyCommand.Definition
-   Write-Host $scriptsPath
-   pushd $scriptsPath
-   & "git checkout $(HelperBranchName)"
-   
-    
+- powershell: ./ PreapreTSHelper.ps1 
+  arguments: '-BranchName v-wedin/AddAzureScript'
   displayName: 'Checkout TSHelper branch'
-
+   
 - task: VSBuild@1
   displayName: 'Build solution RDP Server'
   inputs:
