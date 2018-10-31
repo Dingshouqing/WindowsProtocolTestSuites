@@ -15,5 +15,5 @@ $path = Get-Location
 Write-Host "Get Current Directory: $path"
 
 Write-Host "Start to call git checkout $BranchName"
-git checkout $BranchName
+& git checkout $BranchName
 Pop-Location
