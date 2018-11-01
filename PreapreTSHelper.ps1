@@ -34,7 +34,14 @@ $branch= &git rev-parse --abbrev-ref HEAD
 
 ## Merge Helper branch to TestSuites Branch
 
-./CopyLabScriptToTestSuite.ps1
+$currentDir = split-path -parent $MyInvocation.MyCommand.Definition | Select-Object -first 1
+Write-Host "Current Helper Repo Folder: $currentDir"
+
+$testSuitePath = split-path $currentDir
+Write-Host "Current TestSuite Repo Folder: $testSuitePath"
+
+$toMerge = @('ProtoSDK', 'TestSuites', "AzureScripts")
+$toMerge | Copy-Item -Path {Join-Path $currentDir $_} -Dest $testSuitePath -Recurse -Force
 
 Pop-Location
 
