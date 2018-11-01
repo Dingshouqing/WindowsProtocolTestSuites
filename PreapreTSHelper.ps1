@@ -15,12 +15,16 @@ $path = Get-Location
 Write-Host "Current Directory changed to: $path"
 
 try {
-    "git fetch" | Out-File checkoutbranch.cmd
-    Add-Content -Path checkoutbranch.cmd -Value "git checkout $BranchName"
+    # Write-Host "Start to call git checkout $BranchName"
+    # & "git fetch"
+    # & "git checkout $BranchName"
+
+    "git fetch" | Out-File "$path\checkoutbranch.cmd" -Encoding utf8
+    Add-Content -Path "$path\checkoutbranch.cmd" -Value "git checkout $BranchName" -Encoding utf8
     Write-Host "Execute checkout branch"
-    $batch = Start-Process -FilePath .\checkoutbranch.cmd -Wait -passthru
+    $batch = Start-Process -FilePath "$path\checkoutbranch.cmd" -Wait -passthru
     Write-Host ("Exit code:" + $batch.ExitCode)
-    Remove-Item .\checkoutbranch.cmd
+    Remove-Item "$path\checkoutbranch.cmd"
 }
 catch {
     Write-Warning $_.Exception.Message
