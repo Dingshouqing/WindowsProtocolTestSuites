@@ -32,14 +32,13 @@ catch {
     Write-Warning $_.Exception.Message
 }
 
-$branch= &git rev-parse --abbrev-ref HEAD
+$branch = &git rev-parse --abbrev-ref HEAD
 Write-Host "Current Branch: $branch" -ForegroundColor Yellow
-if($branch -ne $BranchName)
-{
+if ($branch -ne $BranchName) {
     $LastExitCode = 1
     throw "Check out branch $BranchName failed"
 }
-else{
+else {
     $LastExitCode = 0
 }
 ## Merge Helper branch to TestSuites Branch
@@ -51,6 +50,10 @@ $testSuitePath = split-path $currentDir
 Write-Host "Current TestSuite Repo Folder: $testSuitePath"
 
 $toMerge = @('ProtoSDK', 'TestSuites', "AzureScripts")
+$azureScriptPath = (Join-Path $currentDir "AzureScripts")
+if (NOT ( Test-Path -Path $azureScriptPath)) {
+    New-Item -ItemType Directory -Path $azureScriptPath
+}
 $toMerge | Copy-Item -Path {Join-Path $currentDir $_} -Dest $testSuitePath -Recurse -Force
 
 Pop-Location
