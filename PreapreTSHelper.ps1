@@ -25,7 +25,7 @@ try {
 
     Write-Host "Execute checkout branch"
     $batch = Start-Process -FilePath "$path\checkoutbranch.cmd" -Wait -passthru
-    Write-Host ("Exit code:" + $batch.ExitCode)
+    Write-Host ("Check out Helper repo complete, exit code:" + $batch.ExitCode)
     Remove-Item "$path\checkoutbranch.cmd"
 }
 catch {
@@ -59,8 +59,9 @@ else {
 }
 
 foreach($path in $toMerge){
+    Write-Host "Starting merge: $path , please wait..."
     $sourcePath = Join-Path $currentDir $path
-    Copy-Item -Path $sourcePath -Destination $testSuitePath -Recurse -Force
+    Copy-Item $sourcePath $testSuitePath -Recurse -Force
 }
 
 Pop-Location
