@@ -19,8 +19,10 @@ try {
     # & "git fetch"
     # & "git checkout $BranchName"
 
-    "git fetch" | Out-File "$path\checkoutbranch.cmd" -Encoding utf8
-    Add-Content -Path "$path\checkoutbranch.cmd" -Value "git checkout $BranchName" -Encoding utf8
+    "git fetch" | Out-File "$path\checkoutbranch.cmd" -Encoding utf8    ## fetch all repo
+    Add-Content -Path "$path\checkoutbranch.cmd" -Value "git checkout $BranchName" -Encoding utf8   ## checkout specified branch
+    Add-Content -Path "$path\checkoutbranch.cmd" -Value "git pull origin $BranchName" -Encoding utf8    ## pull latest changes.
+
     Write-Host "Execute checkout branch"
     $batch = Start-Process -FilePath "$path\checkoutbranch.cmd" -Wait -passthru
     Write-Host ("Exit code:" + $batch.ExitCode)
@@ -31,7 +33,15 @@ catch {
 }
 
 $branch= &git rev-parse --abbrev-ref HEAD
-
+Write-Host "Current Branch: $branch" -ForegroundColor Yellow
+if($branch -ne $BranchName)
+{
+    $LastExitCode = 1
+    throw "Check out branch $BranchName failed"
+}
+else{
+    $LastExitCode = 0
+}
 ## Merge Helper branch to TestSuites Branch
 
 $currentDir = split-path -parent $MyInvocation.MyCommand.Definition | Select-Object -first 1
@@ -45,11 +55,3 @@ $toMerge | Copy-Item -Path {Join-Path $currentDir $_} -Dest $testSuitePath -Recu
 
 Pop-Location
 
-if($branch -ne $BranchName)
-{
-    $LastExitCode = 1
-    throw "Check out branch $BranchName failed"
-}
-else{
-    $LastExitCode = 0
-}
