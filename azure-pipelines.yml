@@ -25,14 +25,10 @@ steps:
 
     arguments: '-BranchName v-wedin/AddAzureScript'
    
-- task: VSBuild@1
-  displayName: 'Build solution RDP Server'
+- task: BatchScript@1
+  displayName: 'Build RDPServer'
   inputs:
-    solution: 'TestSuites/RDP/Server/src/RDP_Server.sln'
-
-    platform: '$(BuildPlatform)'
-
-    configuration: '$(BuildConfiguration)'
+    filename: TestSuites/RDP/Server/src/build.cmd
 
 
 - task: VSTest@2
