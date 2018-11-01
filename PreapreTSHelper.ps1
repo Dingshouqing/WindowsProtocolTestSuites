@@ -59,7 +59,8 @@ else {
 }
 
 foreach($path in $toMerge){
-    Copy-Item -Path {Join-Path $currentDir $path} -Destination $testSuitePath -Recurse -Force
+    $sourcePath = Join-Path $currentDir $path
+    Copy-Item -Path $sourcePath -Destination $testSuitePath -Recurse -Force
 }
 
 Pop-Location
