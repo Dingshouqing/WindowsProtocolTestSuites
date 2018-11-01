@@ -32,6 +32,10 @@ catch {
 
 $branch= &git rev-parse --abbrev-ref HEAD
 
+## Merge Helper branch to TestSuites Branch
+
+./CopyLabScriptToTestSuite.ps1
+
 Pop-Location
 
 if($branch -ne $BranchName)
