@@ -57,7 +57,10 @@ if ( Test-Path -Path $azureScriptPath) {
 else {
     New-Item -ItemType Directory -Path $azureScriptPath
 }
-$toMerge | Copy-Item -Path {Join-Path $currentDir $_} -Dest $testSuitePath -Recurse -Force
+
+foreach($path in $toMerge){
+    Copy-Item -Path {Join-Path $currentDir $path} -Destination $testSuitePath -Recurse -Force
+}
 
 Pop-Location
 
