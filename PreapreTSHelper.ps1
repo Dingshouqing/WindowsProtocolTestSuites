@@ -51,7 +51,10 @@ Write-Host "Current TestSuite Repo Folder: $testSuitePath"
 
 $toMerge = @('ProtoSDK', 'TestSuites', "AzureScripts")
 $azureScriptPath = (Join-Path $currentDir "AzureScripts")
-if (NOT ( Test-Path -Path $azureScriptPath)) {
+if ( Test-Path -Path $azureScriptPath) {
+    Write-Host "AzureScript folder already exists, file will be override by Helper branch"
+}
+else {
     New-Item -ItemType Directory -Path $azureScriptPath
 }
 $toMerge | Copy-Item -Path {Join-Path $currentDir $_} -Dest $testSuitePath -Recurse -Force
