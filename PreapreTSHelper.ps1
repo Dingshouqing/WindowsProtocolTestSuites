@@ -6,27 +6,27 @@ Param(
     [string]$BranchName = "v-wedin/AddAzureScript"
 )
 
-$scriptsPath = Split-Path $MyInvocation.MyCommand.Definition
-Push-Location $scriptsPath
-Write-Host $scriptsPath
+$tsRootPath = Split-Path $MyInvocation.MyCommand.Definition
+Push-Location $tsRootPath
+Write-Host "TestSuite Root Path: $tsRootPath"
 Set-Location .\TSHelper
+$tsHelperPath = Get-Location
 
-$path = Get-Location
-Write-Host "Current Directory changed to: $path"
+Write-Host "TestSuite Helper Folder Path: $tsHelperPath"
 
 try {
     # Write-Host "Start to call git checkout $BranchName"
     # & "git fetch"
     # & "git checkout $BranchName"
 
-    "git fetch" | Out-File "$path\checkoutbranch.cmd" -Encoding utf8    ## fetch all repo
-    Add-Content -Path "$path\checkoutbranch.cmd" -Value "git checkout $BranchName" -Encoding utf8   ## checkout specified branch
-    Add-Content -Path "$path\checkoutbranch.cmd" -Value "git pull origin $BranchName" -Encoding utf8    ## pull latest changes.
+    "git fetch" | Out-File "$tsHelperPath\checkoutbranch.cmd" -Encoding utf8    ## fetch all repo
+    Add-Content -Path "$tsHelperPath\checkoutbranch.cmd" -Value "git checkout $BranchName" -Encoding utf8   ## checkout specified branch
+    Add-Content -Path "$tsHelperPath\checkoutbranch.cmd" -Value "git pull origin $BranchName" -Encoding utf8    ## pull latest changes.
 
     Write-Host "Execute checkout branch"
-    $batch = Start-Process -FilePath "$path\checkoutbranch.cmd" -Wait -passthru
+    $batch = Start-Process -FilePath "$tsHelperPath\checkoutbranch.cmd" -Wait -passthru
     Write-Host ("Check out Helper repo complete, exit code:" + $batch.ExitCode)
-    Remove-Item "$path\checkoutbranch.cmd"
+    #Remove-Item "$tsHelperPath\checkoutbranch.cmd"
 }
 catch {
     Write-Warning $_.Exception.Message
@@ -43,14 +43,8 @@ else {
 }
 ## Merge Helper branch to TestSuites Branch
 
-$currentDir = split-path -parent $MyInvocation.MyCommand.Definition | Select-Object -first 1
-Write-Host "Current Helper Repo Folder: $currentDir"
-
-$testSuitePath = split-path $currentDir
-Write-Host "Current TestSuite Repo Folder: $testSuitePath"
-
 $toMerge = @('ProtoSDK', 'TestSuites', "AzureScripts")
-$azureScriptPath = (Join-Path $currentDir "AzureScripts")
+$azureScriptPath = (Join-Path $tsRootPath "AzureScripts")
 if ( Test-Path -Path $azureScriptPath) {
     Write-Host "AzureScript folder already exists, file will be override by Helper branch"
 }
@@ -60,8 +54,8 @@ else {
 
 foreach($path in $toMerge){
     Write-Host "Starting merge: $path , please wait..."
-    $sourcePath = Join-Path $currentDir $path
-    Copy-Item $sourcePath $testSuitePath -Recurse -Force
+    $sourcePath = Join-Path $tsHelperPath $path
+    Copy-Item -Path $sourcePath -Destination $tsRootPath -Recurse -Force
 }
 
 Pop-Location
