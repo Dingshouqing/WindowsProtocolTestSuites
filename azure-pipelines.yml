@@ -25,22 +25,21 @@ steps:
 
     arguments: '-BranchName v-wedin/AddAzureScript'
 
-- task: PowerShell@1
-  displayName: 'Create Azure VM'
-  inputs:
-    scriptName: AzureScripts/RDPServer/CreateAzureVM.ps1
-
-- task: PowerShell@1
-  displayName: 'Config and execute'
-  inputs:
-    scriptName: AzureScripts/RDPServer/ConfigAndRunRDP.ps1
-
 - task: BatchScript@1
   displayName: 'Build RDPServer'
   inputs:
     filename: TestSuites/RDP/Server/src/build.cmd
 
+- task: PowerShell@1
+  displayName: 'Create Azure VM'
+  inputs:
+    scriptName: AzureScripts/RDPServer/Create_RDPVMs.ps1
 
+- task: PowerShell@1
+  displayName: 'Config and execute'
+  inputs:
+    scriptName: AzureScripts/RDPServer/ConfigAndRunRDP.ps1
+    
 - task: VSTest@2
   displayName: 'VsTest - testAssemblies'
   inputs:
