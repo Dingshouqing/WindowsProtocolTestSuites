@@ -31,48 +31,6 @@ steps:
 - task: PowerShell@1
   displayName: 'Create Azure VM'
   inputs:
-    scriptName: AzureScripts/RDPServer/Create_RDPVMs.ps1
+    scriptName: AzureScripts/Setup-TestSuiteEnvironment.ps1
 
-- task: PowerShell@1
-  displayName: 'Config and execute'
-  inputs:
-    scriptName: AzureScripts/RDPServer/ConfigAndRunRDP.ps1
-    
-- task: VSTest@2
-  displayName: 'VsTest - testAssemblies'
-  inputs:
-    testAssemblyVer2: |
-     **\$(BuildConfiguration)\*test*.dll
-     !**\obj\**
-
-    platform: '$(BuildPlatform)'
-
-    configuration: '$(BuildConfiguration)'
-
-  enabled: false
-
-- task: PublishSymbols@2
-  displayName: 'Publish symbols path'
-  inputs:
-    SearchPattern: '**\bin\**\*.pdb'
-
-    PublishSymbols: false
-
-  enabled: false
-  continueOnError: true
-
-- task: CopyFiles@2
-  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-  inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
-
-    Contents: '**\bin\$(BuildConfiguration)\**'
-
-    TargetFolder: '$(build.artifactstagingdirectory)'
-
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
 
