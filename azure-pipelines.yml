@@ -31,6 +31,6 @@ steps:
 - task: PowerShell@1
   displayName: 'Setup TestSuite Environment'
   inputs:
-    scriptName: AzureScripts/Setup-TestSuiteEnvironment.ps1
+    scriptName: AzureScripts/Run-TestSuiteRegression.ps1
 
 
