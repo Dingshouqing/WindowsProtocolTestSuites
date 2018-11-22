@@ -29,7 +29,7 @@ steps:
     filename: TestSuites/RDP/Server/src/build.cmd
 
 - task: PowerShell@1
-  displayName: 'Setup TestSuite Environment'
+  displayName: 'Run Regression Job'
   inputs:
     scriptName: AzureScripts/Run-TestSuiteRegression.ps1
 
